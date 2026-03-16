@@ -129,16 +129,16 @@ def get_nearby_fuel_stations(route):
     """
     
     try:
-        response = requests.get(overpass_url, params={'data': overpass_query})
+        response = requests.get(overpass_url, params={'data': overpass_query}, timeout=10)
         response.raise_for_status()
         data = response.json()
 
-        for element in data['elements']:
+        for element in data['elements'][:20]:
             name = element.get('tags', {}).get('name', 'Unknown Fuel Station')
             lat = element['lat']
             lon = element['lon']
             # Check if the fuel station is within 1 km of the route
-            for point in route[::20]:
+            for point in route[::50]:
                 route_lat, route_lon = point[1], point[0]
                 distance = haversine(route_lat, route_lon, lat, lon)
                 if distance <= 1:  # If within 1 km
@@ -181,16 +181,16 @@ def get_nearby_tolls(route):
     """
 
     try:
-        response = requests.get(overpass_url, params={'data': overpass_query})
+        response = requests.get(overpass_url, params={'data': overpass_query}, timeout=10)
         response.raise_for_status()
         data = response.json()
 
-        for element in data['elements']:
+        for element in data['elements'][:20]:
             name = element.get('tags', {}).get('name', 'Unknown Toll')
             lat = element['lat']
             lon = element['lon']
             # Check if the toll is within 1 km of the route
-            for point in route[::20]:
+            for point in route[::50]:
                 route_lat, route_lon = point[1], point[0]
                 distance = haversine(route_lat, route_lon, lat, lon)
                 if distance <= 1:  # If within 1 km
