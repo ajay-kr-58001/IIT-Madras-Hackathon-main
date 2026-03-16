@@ -138,7 +138,7 @@ def get_nearby_fuel_stations(route):
             lat = element['lat']
             lon = element['lon']
             # Check if the fuel station is within 1 km of the route
-            for point in route:
+            for point in route[::20]:
                 route_lat, route_lon = point[1], point[0]
                 distance = haversine(route_lat, route_lon, lat, lon)
                 if distance <= 1:  # If within 1 km
@@ -190,7 +190,7 @@ def get_nearby_tolls(route):
             lat = element['lat']
             lon = element['lon']
             # Check if the toll is within 1 km of the route
-            for point in route:
+            for point in route[::20]:
                 route_lat, route_lon = point[1], point[0]
                 distance = haversine(route_lat, route_lon, lat, lon)
                 if distance <= 1:  # If within 1 km
